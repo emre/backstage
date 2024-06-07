@@ -139,14 +139,13 @@ export class DefaultLocationStore implements LocationStore, EntityProvider {
       })
       .select('value')
       .limit(1);
+
     if (!locationKeyValue) {
       throw new NotFoundError(
         `found no origin annotation for ref ${entityRefString}`,
       );
     }
-
-    const { type, target } = parseLocationRef(entityRefString);
-    // const kind, target = split[0], split[1];
+    const { type, target } = parseLocationRef(locationKeyValue.value!);
     const [location] = await this.db<DbLocationsRow>('locations')
       .where({ type, target })
       .select()
